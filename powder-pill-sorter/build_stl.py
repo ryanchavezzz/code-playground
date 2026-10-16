@@ -28,7 +28,7 @@ def text_section(s, font, cap):
     x1 = cs.bounds()[2]
     return cs.translate([-x1, 0])
 
-def foot_cutter(text, side, font, cap=3.3, depth=0.5):
+def foot_cutter(text, side, font, cap=3.8, depth=0.5):
     """Deboss one line into the top (z=3) of a skid, between the legs (y 22..58), reading from
     that skid's outer side with the baseline toward the outer edge. side=-1 left, +1 right."""
     cs = text_section(text, font, cap)
@@ -53,9 +53,9 @@ def report(name, m):
     print(f"{name}: watertight={m.is_watertight} vol={m.volume:.1f} bodies={len(m.split())} bounds={m.bounds.round(2).tolist()}")
 # base: legs and skids already overlap, so a plain union fuses them
 base = union(list(parts['base'].split()))
-# Credit on the feet: 0.5 mm deep in the 3 mm skids; cap 3.3 keeps strokes ~0.55 mm for a 0.4 nozzle
-base = frommf(tomf(base) - foot_cutter("Designed by Bill.", -1, sys.argv[3])
-                         - foot_cutter("Printed in California.", 1, sys.argv[3]))
+# Credit on the feet: 0.5 mm deep in the 3 mm skids; caps at 3.8 fill the 34 mm between the legs
+base = frommf(tomf(base) - foot_cutter("DESIGNED BY BILL", -1, sys.argv[3])
+                         - foot_cutter("IN CALIFORNIA", 1, sys.argv[3]))
 report('base', base)
 # The fin's underside is exactly coplanar with the rim top, and an exact-coplanar union leaves an
 # internal zero-thickness sheet. Sinking the fin 0.01 mm gives the solver real overlap; the
