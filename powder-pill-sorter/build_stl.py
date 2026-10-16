@@ -53,9 +53,8 @@ def report(name, m):
     print(f"{name}: watertight={m.is_watertight} vol={m.volume:.1f} bodies={len(m.split())} bounds={m.bounds.round(2).tolist()}")
 # base: legs and skids already overlap, so a plain union fuses them
 base = union(list(parts['base'].split()))
-# Credit on the feet: 0.5 mm deep in the 3 mm skids; caps at 3.8 fill the 34 mm between the legs
-base = frommf(tomf(base) - foot_cutter("DESIGNED BY BILL", -1, sys.argv[3])
-                         - foot_cutter("IN CALIFORNIA", 1, sys.argv[3]))
+# Credit on the left foot: 0.5 mm deep in the 3 mm skid; caps at 3.8 fill the 34 mm between the legs
+base = frommf(tomf(base) - foot_cutter("DESIGNED BY BILL", -1, sys.argv[3]))
 report('base', base)
 # The fin's underside is exactly coplanar with the rim top, and an exact-coplanar union leaves an
 # internal zero-thickness sheet. Sinking the fin 0.01 mm gives the solver real overlap; the
